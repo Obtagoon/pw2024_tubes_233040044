@@ -2,8 +2,8 @@
 require 'function.php';
 
 // Check if 'id' is set in $_POST and validate it
-if (isset($_POST['id']) && is_numeric($_POST['id'])) {
-    $id = intval($_POST['id']);
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $id = intval($_GET['id']);
     echo "ID to delete: " . $id . "<br>";  // Debugging line
 
     // Call the hapus function

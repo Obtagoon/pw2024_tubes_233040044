@@ -119,13 +119,20 @@ function loginfungsion($data)
     $password = htmlspecialchars($data["password"]);
     // cek dulu username nya // 
     $user = query("SELECT * FROM user WHERE username = '$username'");
+
     if (count($user) > 0) {
+
         if (password_verify($password, $user[0]['password'])) {
+
             $_SESSION['login'] = true;
+            $_SESSION['user'] = $user[0];
             header("Location: index.php");
+
+
             exit;
         }
     }
+
     return [
         'error' => true,
         'pesan' => 'Username/ Password Salah'

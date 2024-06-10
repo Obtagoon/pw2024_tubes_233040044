@@ -19,6 +19,9 @@ if (isset($_POST['register'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halaman Registrasi</title>
     <link rel="stylesheet" href="../pw2024_tubes_233040044/css/style.css">
+    <style>
+       
+    </style>
 </head>
 
 <body>
@@ -44,7 +47,9 @@ if (isset($_POST['register'])) {
                 <div class="input_box">
                     <input type="submit" name="register" value="login" class="input-submit">
                 </div>
-
+        <p>
+            Already Have An Account? <a href="login.php">Login</a>
+        </p>
         </div>
     </div>
     </form>

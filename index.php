@@ -1,6 +1,13 @@
 <?php
 // Koneksi Ke Data Base //
 session_start();
+
+$user = $_SESSION['user'];
+if (!isset($_SESSION['user'])) {
+    session_destroy();
+    header("Location: login.php");
+    exit;
+}
 require('function.php');
 
 $motor = query("SELECT * FROM otomotive");
@@ -36,11 +43,10 @@ $no = 1;
     <nav class="navbar fixed-top">
         <div class="container-fluid">
             <h2 class="navbar-brand">Moto77 Garage</h2>
-            <form class="d-flex" role="search" method="post">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword" autofocus autocomplete="off" id="keyword">
-                <button class="btn btn-outline-success" type="submit" id="tombol-cari" name="cari">Search</button>
-
-            </form>
+            <div class="d-flex">
+                <input class="div-control me-2" type="search" placeholder="Search" aria-label="Search" autofocus autocomplete="off" id="searchInput">
+                <!-- <button class="btn btn-outline-success" type="submit" id="tombol-cari" name="cari">Search</button> -->
+            </div>
             <a href="logout.php" class="btn btn-danger" role="button">Log out</a>
         </div>
     </nav>
@@ -69,31 +75,18 @@ $no = 1;
                     <th>tipemotor</th>
                     <th>harga</th>
                     <th>deskripsi</th>
-                    <th>aksi</th>
+                    <?php if ($user['role'] == 'admin') : ?>
+                        <th>aksi</th>
+                    <?php endif; ?>
                 </tr>
             </thead>
-            <tbody>
-                <?php foreach ($motor as $mtr) : ?>
-                    <tr>
-                        <th scope="row"><?php echo $no++; ?></th>
-                        <td><img src="img/<?= $mtr['gambar'] ?>" width="70"></td>
-                        <td><?= $mtr['motor'] ?></td>
-                        <td><?= $mtr['tipemotor'] ?></td>
-                        <td><?= $mtr['harga'] ?></td>
-                        <td><?= $mtr['deskripsi'] ?></td>
-                        <td>
-                            <a href="ubah.php?id=<?= $mtr['id']; ?>">Ubah</a> |
-                            <form action="hapus.php" method="post" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
-                                <input type="hidden" name="id" value="<?= $mtr['id']; ?>">
-                                <button type="submit">hapus</button>
-                            </form>
+            <tbody id="searchResults">
 
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
             </tbody>
         </table>
-        <a href="tambah.php" class="btn btn-primary mt-2 mb-2">Tambah data unit</a>
+        <?php if ($user['role'] == 'admin') : ?>
+            <a href="tambah.php" class="btn btn-primary mt-2 mb-2">Tambah data unit</a>
+        <?php endif; ?>
     </section>
 
 
@@ -103,8 +96,25 @@ $no = 1;
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#searchButton').click(function() {
-                var query = $('#searchInput').val();
+            var query = $(this).val(); // Using $(this) instead of $('#searchInput') for more specific targeting
+
+            $.ajax({
+                url: 'search.php',
+                method: 'POST',
+                data: {
+                    query: query
+                },
+                success: function(data) {
+                    $('#searchResults').html(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log('Error:', textStatus, errorThrown); // Optional: Log any errors for debugging
+                }
+            });
+
+
+            $("input").on('input', function() {
+                var query = $(this).val(); // Using $(this) instead of $('#searchInput') for more specific targeting
 
                 $.ajax({
                     url: 'search.php',
@@ -114,6 +124,9 @@ $no = 1;
                     },
                     success: function(data) {
                         $('#searchResults').html(data);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log('Error:', textStatus, errorThrown); // Optional: Log any errors for debugging
                     }
                 });
             });

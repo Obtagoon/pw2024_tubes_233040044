@@ -21,7 +21,7 @@ if (isset($_POST["login"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="./css/style.css">
     <style>
         label {
             display: block;
@@ -41,16 +41,22 @@ if (isset($_POST["login"])) {
 
             <form action="login.php" method="post">
                 <div class="input_box">
-                    <input type="text" id="username" name="username" class="input-field">
                     <label for="username" autofocus autocomplete="off" required>Username</label>
+                    <input type="text" id="username" name="username" class="input-field">
+
                 </div>
                 <div class="input_box">
-                    <input type="text" id="password" name="password" class="input-field">
                     <label for="password" autofocus autocomplete="off" required>Password</label>
+                    <input type="text" id="password" name="password" class="input-field">
+
+
                 </div>
                 <div class="input_box">
                     <input type="submit" name="login" value="login" class="input-submit">
                 </div>
+                <p>
+                    Didnt Have An Account? <a href="register.php">Login</a>
+                </p>
         </div>
     </div>
     </form>
