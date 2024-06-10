@@ -111,17 +111,16 @@ function query($query)
     return $rows;
 }
 
-function login($data)
+function loginfungsion($data)
 {
     global $conn;
 
     $username = htmlspecialchars($data["username"]);
     $password = htmlspecialchars($data["password"]);
-
     // cek dulu username nya // 
-    if ($user = query("SELECT * FROM user WHERE username = '$username'")[0]) {
-        if (password_verify($password, $user['password'])) {
-
+    $user = query("SELECT * FROM user WHERE username = '$username'");
+    if (count($user) > 0) {
+        if (password_verify($password, $user[0]['password'])) {
             $_SESSION['login'] = true;
             header("Location: index.php");
             exit;
@@ -132,6 +131,7 @@ function login($data)
         'pesan' => 'Username/ Password Salah'
     ];
 }
+
 function registrasi($data)
 {
     $conn = koneksi();

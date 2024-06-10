@@ -1,9 +1,7 @@
 <?php
 // Koneksi Ke Data Base //
-
+session_start();
 require('function.php');
-
-// Ambil Data Mahasiswa Dari Tabel  { Query } //
 
 $motor = query("SELECT * FROM otomotive");
 
@@ -41,7 +39,9 @@ $no = 1;
             <form class="d-flex" role="search" method="post">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword" autofocus autocomplete="off" id="keyword">
                 <button class="btn btn-outline-success" type="submit" id="tombol-cari" name="cari">Search</button>
+
             </form>
+            <a href="logout.php" class="btn btn-danger" role="button">Log out</a>
         </div>
     </nav>
 
